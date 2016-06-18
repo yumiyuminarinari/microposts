@@ -8,6 +8,6 @@ class User < ActiveRecord::Base
   has_secure_password
   # on: :update　以下のメソッドの時だけ実行される
   validates :age , numericality: { only_integer: true , greater_than_or_equal_to: 0}, length: { maximum: 3 }, on: :update
-  validates :address , length: { maximum: 5}, on: :update
+  validates :address , length: { maximum: 10}, on: :update
 
 end

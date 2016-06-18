@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
 
   # edit,updateメソッドの前にset_messageを実行
-  before_action :set_message, only: [:edit, :update, :destroy]
+  before_action :set_message, only: [:edit, :update, :destroy, :edit_address, :edit_address_complete]
   before_action :correct_user,   only: [:edit, :update]
   
   def show
@@ -24,6 +24,26 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit_address
+    # 指定したrenderでviewを作成する
+    render 'edit_address_test'
+  end
+
+  def edit_address_complete
+
+    if @user.update(user_update_params)
+      # nowを入れると一回だけ表示。そうじゃないと、メッセージが残る
+      flash.now[:success] = "プロフィールを更新しましたよ。"
+      # viewのファイル名を指定する
+      render 'edit_address_test'
+    else
+      @users = User.all
+      flash.now[:danger] = "更新内容にエラーがありますよ。"
+      # viewのファイル名を指定する
+      render 'edit_address_test'
+
+    end
+  end
 
   def edit
   end
