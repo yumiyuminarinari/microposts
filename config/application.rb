@@ -29,5 +29,8 @@ module Microposts
       g.test_framework false
     end
     config.active_record.raise_in_transactional_callbacks = true
+    # Ajaxでリクエストを送信する際に、データを安全にやりとりするためにトークンという文字列を付与
+    config.action_view.embed_authenticity_token_in_remote_forms = true
+
   end
 end
