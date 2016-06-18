@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  # edit,updateメソッドの前にset_messageを実行
+  before_action :set_message, only: [:edit, :update, :destroy]
   
   def show
     @user = User.find(params[:id])
@@ -19,10 +22,37 @@ class UsersController < ApplicationController
       render 'new'
     end
   end
+
+
+  def edit
+  end
+
+  def update
+
+    if @user.update(user_update_params)
+      # nowを入れると一回だけ表示。そうじゃないと、メッセージが残る
+      flash.now[:success] = "プロフィールを更新しました。"
+      render 'edit'
+    else
+      @users = User.all
+      flash.now[:danger] = "更新内容にエラーがあります。"
+      render 'edit'
+    end
+  end
+
+  private
   
   def user_params
     params.require(:user).permit(:name, :email, :password,
                                  :password_confirmation)
   end
 
+  def user_update_params
+    params.require(:user).permit(:name, :email, :password,
+                                 :password_confirmation, :age, :address)
+  end
+
+  def set_message
+    @user = User.find(params[:id])
+  end
 end
