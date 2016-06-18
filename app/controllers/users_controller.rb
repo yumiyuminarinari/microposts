@@ -2,6 +2,7 @@ class UsersController < ApplicationController
 
   # edit,updateメソッドの前にset_messageを実行
   before_action :set_message, only: [:edit, :update, :destroy]
+  before_action :correct_user,   only: [:edit, :update]
   
   def show
     @user = User.find(params[:id])
@@ -55,4 +56,10 @@ class UsersController < ApplicationController
   def set_message
     @user = User.find(params[:id])
   end
+
+    # 正しいユーザーかどうかチェック
+    def correct_user
+      @user = User.find(params[:id])
+      redirect_to(root_url) unless @user == current_user
+    end
 end
