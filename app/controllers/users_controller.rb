@@ -3,9 +3,10 @@ class UsersController < ApplicationController
   # edit,updateメソッドの前にset_messageを実行
   before_action :set_message, only: [:edit, :update, :destroy, :edit_address, :edit_address_complete]
   before_action :correct_user,   only: [:edit, :update]
-  
+
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.order(created_at: :desc)
   end
   
   def new
@@ -61,6 +62,14 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @micropost = current_user.microposts.find_by(id: params[:id])
+    return redirect_to root_url if @micropost.nil?
+    @micropost.destroy
+    flash[:success] = "Micropost deleted"
+    redirect_to request.referrer || root_url
+  end
+
   private
   
   def user_params
@@ -77,9 +86,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-    # 正しいユーザーかどうかチェック
-    def correct_user
-      @user = User.find(params[:id])
-      redirect_to(root_url) unless @user == current_user
-    end
+  # 正しいユーザーかどうかチェック
+  def correct_user
+    @user = User.find(params[:id])
+    redirect_to(root_url) unless @user == current_user
+  end
+
 end

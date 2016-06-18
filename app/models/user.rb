@@ -10,4 +10,7 @@ class User < ActiveRecord::Base
   validates :age , numericality: { only_integer: true , greater_than_or_equal_to: 0}, length: { maximum: 3 }, on: :update
   validates :address , length: { maximum: 10}, on: :update
 
+  has_many :microposts
+
+
 end
