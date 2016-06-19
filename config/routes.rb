@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     member do
       get  'edit_address', to: 'users#edit_address'
       patch 'edit_address_complete', to: 'users#edit_address_complete'
+      get :following, :followers
     end
   end
   resources :sessions, only: [:new, :create, :destroy]

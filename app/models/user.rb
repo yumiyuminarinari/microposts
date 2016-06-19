@@ -20,9 +20,9 @@ class User < ActiveRecord::Base
                                      dependent:   :destroy
   # throughには、following_relationshipsが指定されていて、following_relationshipsを経由してフォローしているユーザーの集まりを取得
   # userがフォローしている人は、following_relationshipsのfollowed_idに一致するユーザーになるので、sourceとしてfollowedを指定
-  has_many :following_users, through: :following_relationships, source: :followed
-
-  ########################################################################################################################
+  has_many :following, through: :following_relationships, source: :followed
+  
+  # --------------------------------------------------------------------------------------------------------------------#
   # follower_relationshipsのforeign_keyのfollowed_idにuserのidが入るので、
   # user.follower_relationshipsによって、userがフォローされている場合のrelationshipの集まりを取得
   has_many :follower_relationships, class_name:  "Relationship",
@@ -30,8 +30,8 @@ class User < ActiveRecord::Base
                                     dependent:   :destroy
   # throughには、follower_relationshipsが指定されていて、follower_relationshipsを経由してuserがフォローされているユーザーの集まりを取得
   # userをフォローしている人は、follower_relationshipsのfollower_idに一致するユーザーになるので、sourceとしてfollowerを指定
-  has_many :follower_users, through: :follower_relationships, source: :follower
-
+  has_many :follower, through: :follower_relationships, source: :follower
+  # --------------------------------------------------------------------------------------------------------------------#
 
   # 他のユーザーをフォローする
   def follow(other_user)
@@ -46,6 +46,9 @@ class User < ActiveRecord::Base
 
   # あるユーザーをフォローしているかどうか？
   def following?(other_user)
-    following_users.include?(other_user)
+    following.include?(other_user)
   end
+  ########################################################################################################################
+
+
 end

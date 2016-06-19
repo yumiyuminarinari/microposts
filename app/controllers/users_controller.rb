@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   # edit,updateメソッドの前にset_messageを実行
   before_action :set_message, only: [:edit, :update, :destroy, :edit_address, :edit_address_complete]
   before_action :correct_user,   only: [:edit, :update]
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy,
+                                        :following, :followers]
 
   def show
     @user = User.find(params[:id])
@@ -68,6 +70,20 @@ class UsersController < ApplicationController
     @micropost.destroy
     flash[:success] = "Micropost deleted"
     redirect_to request.referrer || root_url
+  end
+
+  def following
+    @title = "Following"
+    @user  = User.find(params[:id])
+    @users = @user.following
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers"
+    @user  = User.find(params[:id])
+    @users = @user.follower
+    render 'show_follow'
   end
 
   private
