@@ -39,6 +39,7 @@
               <span class="user"><%= link_to user.name, user %></span>
             </li>
           <% end %>
+          <%= paginate @users %>
         <% end %>
       </ul>
     <% end %>
