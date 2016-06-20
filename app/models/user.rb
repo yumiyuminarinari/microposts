@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   # userがフォローしている人は、following_relationshipsのfollowed_idに一致するユーザーになるので、sourceとしてfollowedを指定
   has_many :following_users, through: :following_relationships, source: :followed
 
-  ########################################################################################################################
+  # -----------------------------------------------------------------------------------------------------------------------
   # follower_relationshipsのforeign_keyのfollowed_idにuserのidが入るので、
   # user.follower_relationshipsによって、userがフォローされている場合のrelationshipの集まりを取得
   has_many :follower_relationships, class_name:  "Relationship",
@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   # userをフォローしている人は、follower_relationshipsのfollower_idに一致するユーザーになるので、sourceとしてfollowerを指定
   has_many :follower_users, through: :follower_relationships, source: :follower
 
+  # -----------------------------------------------------------------------------------------------------------------------
 
   # 他のユーザーをフォローする
   def follow(other_user)
@@ -48,4 +49,15 @@ class User < ActiveRecord::Base
   def following?(other_user)
     following_users.include?(other_user)
   end
+  ########################################################################################################################
+  
+  # タイムライン表示
+  # user_idがフォローしているユーザーと自分のつぶやきを取得
+  # following_user_idsは、Userモデルのhas_many :following_usersの部分で自動的に生成されたメソッドで、
+  # フォローしているユーザーのIDを配列で返します。配列同士は、+で要素を足し合わせる。
+  def feed_items
+    Micropost.where(user_id: following_user_ids + [self.id])
+  end
+
+
 end
