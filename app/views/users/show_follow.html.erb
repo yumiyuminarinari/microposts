@@ -29,20 +29,18 @@
     </section>
   </aside>
   <div class="col-md-8">
-    <%= render 'follow_form' if logged_in? %>
-    <% if @user.microposts.any? %>
-      <h3>Microposts (<%= @user.microposts.count %>)</h3>
-      <ol class="microposts">
-        <%= render @microposts %>
-        <!--
-        上記の内容＿その１
-        <%= render partial: 'microposts/micropost', collection: @microposts %>
-        上記の内容＿その２
-        <% @microposts.each do |micropost| %>
-          <%= render partial: 'microposts/micropost', locals: { micropost: micropost } %>
+    <h3><%= @title %></h3>
+    <% if @users.any? %>
+      <ul class="followusers">
+        <% if @users.any? %>
+          <% @users.each do |user| %>
+            <li id="followusers-<%= user.id %>">
+              <%= link_to gravatar_for(user, size: 50), user %>
+              <span class="user"><%= link_to user.name, user %></span>
+            </li>
+          <% end %>
         <% end %>
-        -->
-      </ol>
+      </ul>
     <% end %>
   </div>
 </div>

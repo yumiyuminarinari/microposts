@@ -70,6 +70,20 @@ class UsersController < ApplicationController
     redirect_to request.referrer || root_url
   end
 
+  def following_users
+    @title = "Following"
+    @user  = User.find(params[:id])
+    @users = @user.following_users
+    render 'show_follow'
+  end
+
+  def follower_users
+    @title = "Followers"
+    @user  = User.find(params[:id])
+    @users = @user.follower_users
+    render 'show_follow'
+  end
+
   private
   
   def user_params
